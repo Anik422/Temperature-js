@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="location-name" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button onclick="findWeather()" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="temp-icon" alt="">
+            <h1 id="city-name"></h1>
+            <h3><span id="temp-value"></span>&deg;C</h3>
+            <h1 id="lend" class="lead"></h1>
+        </div>
+    </div>
+<script>
+    // https://api.openweathermap.org/data/2.5/weather?q=Dhaka&appid=553c79e7850a748fbad36ed3352883d7
+    function findWeather(){
+        let location_name = document.getElementById("location-name")
+        const name = location_name.value;
+        location_name.value = '';
+        url = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=553c79e7850a748fbad36ed3352883d7&units=metric`
+        // console.log(url)
+        fetch(url)
+        .then(src => src.json())
+        .then(data => {
+            inennerTextSet("city-name" ,data.name)
+            inennerTextSet("temp-value" , data.main.temp)
+            inennerTextSet("lend" , data.weather[0].main)
+            let iconImg = document.getElementById("temp-icon")
+            iconImg.setAttribute('src', `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`)
+            console.log(data.weather[0])
+        })
+    }
+    function inennerTextSet(id, text){
+        document.getElementById(id).innerHTML = text;
+    }
+</script>
+</body>
+
+</html>
